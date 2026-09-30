@@ -3485,7 +3485,7 @@ class EditorMinimap extends BaseEditorOption<EditorOption.minimap, IEditorMinima
 			side: 'right',
 			showSlider: 'mouseover',
 			autohide: 'none',
-			renderCharacters: true,
+			renderCharacters: false,
 			maxColumn: 120,
 			scale: 1,
 			showRegionSectionHeaders: true,

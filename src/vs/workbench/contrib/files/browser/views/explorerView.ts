@@ -55,6 +55,7 @@ import { AbstractTreePart } from '../../../../../base/browser/ui/tree/abstractTr
 import { IHoverService } from '../../../../../platform/hover/browser/hover.js';
 import { IAccessibilityService } from '../../../../../platform/accessibility/common/accessibility.js';
 import { IEnvironmentService } from '../../../../../platform/environment/common/environment.js';
+import { ITextFileService } from '../../../../services/textfile/common/textfiles.js';
 
 
 function hasExpandedRootChild(tree: WorkbenchCompressibleAsyncDataTree<ExplorerItem | ExplorerItem[], ExplorerItem, FuzzyScore>, treeInput: ExplorerItem[]): boolean {
@@ -235,6 +236,7 @@ export class ExplorerView extends ViewPane implements IExplorerView {
 		@IStorageService private readonly storageService: IStorageService,
 		@IClipboardService private clipboardService: IClipboardService,
 		@IFileService private readonly fileService: IFileService,
+		@ITextFileService private readonly textFileService: ITextFileService,
 		@IUriIdentityService private readonly uriIdentityService: IUriIdentityService,
 		@ICommandService private readonly commandService: ICommandService,
 		@IOpenerService openerService: IOpenerService,
@@ -595,6 +597,9 @@ export class ExplorerView extends ViewPane implements IExplorerView {
 		// Update resource context based on focused element
 		this._register(this.tree.onDidChangeFocus(e => this.onFocusChanged(e.elements)));
 		this.onFocusChanged([]);
+
+		// Pre-warm file models on hover for instant open
+		this._register(this.tree.onMouseOver(e => this.prewarmElement(e.element)));
 		// Open when selecting via keyboard
 		this._register(this.tree.onDidOpen(async e => {
 			const element = e.element;
@@ -759,6 +764,7 @@ export class ExplorerView extends ViewPane implements IExplorerView {
 			const enableTrash = Boolean(this.configurationService.getValue<IFilesConfiguration>().files?.enableTrash);
 			const hasCapability = this.fileService.hasCapability(stat.resource, FileSystemProviderCapabilities.Trash);
 			this.resourceMoveableToTrash.set(enableTrash && hasCapability);
+			this.prewarmElement(stat);
 		} else {
 			this.resourceMoveableToTrash.reset();
 		}
@@ -773,6 +779,22 @@ export class ExplorerView extends ViewPane implements IExplorerView {
 		this.compressedFocusContext.set(true);
 		compressedNavigationControllers.forEach(controller => {
 			this.updateCompressedNavigationContextKeys(controller);
+		});
+	}
+
+	private prewarmElement(element: ExplorerItem | ExplorerItem[] | null | undefined): void {
+		if (!element) {
+			return;
+		}
+		const item = Array.isArray(element) ? element[0] : element;
+		if (item.isDirectory || !item.resource) {
+			return;
+		}
+		if (this.textFileService.files.get(item.resource)) {
+			return;
+		}
+		this.textFileService.files.resolve(item.resource, { reload: { async: true } }).catch(() => {
+			// Ignore any background pre-warming errors
 		});
 	}
 
