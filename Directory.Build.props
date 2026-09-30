@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <SpectreMitigation>false</SpectreMitigation>
+    <CheckMSVCComponents>false</CheckMSVCComponents>
+  </PropertyGroup>
+</Project>
