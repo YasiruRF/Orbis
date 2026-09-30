@@ -331,7 +331,7 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
 			'workbench.editor.enablePreview': {
 				'type': 'boolean',
 				'description': localize('enablePreview', "Controls whether preview mode is used when editors open. There is a maximum of one preview mode editor per editor group. This editor displays its filename in italics on its tab or title label and in the Open Editors view. Its contents will be replaced by the next editor opened in preview mode. Making a change in a preview mode editor will persist it, as will a double-click on its label, or the 'Keep Open' option in its label context menu. Opening a file from Explorer with a double-click persists its editor immediately."),
-				'default': true
+				'default': false
 			},
 			'workbench.editor.enablePreviewFromQuickOpen': {
 				'type': 'boolean',
@@ -458,7 +458,7 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
 			},
 			'workbench.editor.limit.enabled': {
 				'type': 'boolean',
-				'default': false,
+				'default': true,
 				'description': localize('limitEditorsEnablement', "Controls if the number of opened editors should be limited or not. When enabled, less recently used editors will close to make space for newly opening editors.")
 			},
 			'workbench.editor.limit.value': {
@@ -469,12 +469,12 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
 			},
 			'workbench.editor.limit.excludeDirty': {
 				'type': 'boolean',
-				'default': false,
+				'default': true,
 				'description': localize('limitEditorsExcludeDirty', "Controls if the maximum number of opened editors should exclude dirty editors for counting towards the configured limit.")
 			},
 			'workbench.editor.limit.perEditorGroup': {
 				'type': 'boolean',
-				'default': false,
+				'default': true,
 				'description': localize('perEditorGroup', "Controls if the limit of maximum opened editors should apply per editor group or across all editor groups.")
 			},
 			'workbench.localHistory.enabled': {

@@ -53,7 +53,7 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
 	focusRecentEditorAfterClose: true,
 	showIcons: true,
 	hasIcons: true, // 'vs-seti' is our default icon theme
-	enablePreview: true,
+	enablePreview: false,
 	openPositioning: 'right',
 	openSideBySideDirection: 'right',
 	closeEmptyGroups: true,
@@ -77,7 +77,7 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
 	revealIfOpen: false,
 	// Properties that are Objects have to be defined as getters
 	// to ensure no consumer modifies the default values
-	get limit(): IEditorPartLimitOptions { return { enabled: false, value: 10, perEditorGroup: false, excludeDirty: false }; },
+	get limit(): IEditorPartLimitOptions { return { enabled: true, value: 10, perEditorGroup: true, excludeDirty: true }; },
 	get decorations(): IEditorPartDecorationOptions { return { badges: true, colors: true }; },
 	get autoLockGroups(): Set<string> { return new Set<string>(); }
 };
