@@ -12,7 +12,10 @@ import tseslint from 'typescript-eslint';
 
 import stylistic from '@stylistic/eslint-plugin';
 import * as pluginLocal from './.eslint-plugin-local/index.ts';
-import * as pluginCopilotLocal from './extensions/copilot/.eslintplugin/index.ts';
+const copilotPluginPath = path.join(import.meta.dirname, 'extensions/copilot/.eslintplugin/index.ts');
+const pluginCopilotLocal = fs.existsSync(copilotPluginPath)
+	? await import('./extensions/copilot/.eslintplugin/index.ts')
+	: { rules: {} };
 import pluginImport from 'eslint-plugin-import';
 import pluginJsdoc from 'eslint-plugin-jsdoc';
 
