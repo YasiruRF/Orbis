@@ -1,10 +1,10 @@
 {
 	"nameShort": "Orbis",
 	"nameLong": "Orbis",
-	"applicationName": "code-oss",
+	"applicationName": "orbis",
 	"dataFolderName": ".vscode-oss",
 	"sharedDataFolderName": ".vscode-oss-shared",
-	"win32MutexName": "vscodeoss",
+	"win32MutexName": "orbis",
 	"licenseName": "MIT",
 	"licenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
 	"serverLicenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
