@@ -19,9 +19,9 @@ import { ILogService, LogLevel } from '../../log/common/log.js';
 import { IThemeMainService } from './themeMainService.js';
 
 // These default colors match our default themes
-// editor background color ("Dark Modern", etc...)
+// editor background color ("Praxis Dark", etc...)
 const DEFAULT_BG_LIGHT = '#FFFFFF';
-const DEFAULT_BG_DARK = '#1F1F1F';
+const DEFAULT_BG_DARK = '#111113';
 const DEFAULT_BG_HC_BLACK = '#000000';
 const DEFAULT_BG_HC_LIGHT = '#FFFFFF';
 

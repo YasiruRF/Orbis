@@ -552,6 +552,9 @@ function prepareCopilotRipgrepShimTask(platform: string, arch: string, destinati
 		const appNodeModulesDir = path.join(appBase, 'node_modules.asar.unpacked');
 
 		const builtInCopilotExtensionDir = path.join(appBase, 'extensions', 'copilot');
+		if (!fs.existsSync(builtInCopilotExtensionDir)) {
+			return; // the built-in copilot extension is not part of this build
+		}
 		prepareBuiltInCopilotRipgrepShim(platform, arch, builtInCopilotExtensionDir, appNodeModulesDir);
 	};
 }

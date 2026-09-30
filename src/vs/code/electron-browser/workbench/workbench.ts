@@ -72,8 +72,8 @@ import { getPartsSplashColors, getPartsSplashLayoutMetrics } from './partsSplash
 		} else if (configuration.autoDetectColorScheme) {
 			if (configuration.colorScheme.dark) {
 				baseTheme = 'vs-dark';
-				shellBackground = '#1E1E1E';
-				shellForeground = '#CCCCCC';
+				shellBackground = '#111113';
+				shellForeground = '#ECECE9';
 			} else {
 				baseTheme = 'vs';
 				shellBackground = '#FFFFFF';
