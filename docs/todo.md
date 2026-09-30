@@ -29,6 +29,9 @@
   - [x] 0.1.5 Decouple Copilot dependencies and restore upstream test suites.
   - [x] 0.1.6 Fix ESLint configuration for dynamic optional extension imports.
   - [x] 0.1.7 Configure Open VSX extension gallery.
+  - [x] 0.1.8 Author Praxis Material Icon Theme with dual-tone (#ECECE9 Off-White / #C1121F Crimson) language icons.
+  - [x] 0.1.9 Configure tab stacking working set with 10-tab LRU memory pool (`workbench.editor.limit`).
+
 
 ---
 
@@ -151,6 +154,9 @@ Strip out obsolete built-in baggage, eliminate all telemetry/experimentation loo
   - [ ] 4.4.1 Audit IPC channels across Main, Shared, and Renderer processes; batch noisy messages and eliminate synchronous IPC.
   - [ ] 4.4.2 Tune Electron startup flags in `scripts/code.bat` and main process initialization (memory limits, code caching).
   - [ ] 4.4.3 Optimize editor rendering defaults (reduce minimap canvas overhead, throttle smooth scrolling, optimize bracket pair caching).
+    - [x] 4.4.3a Default minimap to block mode (`editor.minimap.renderCharacters: false`) eliminating canvas glyph layout overhead.
+    - [x] 4.4.3b Implement predictive text model pre-warming in Explorer (`onMouseOver` / `onDidChangeFocus`) to eliminate cold-switch latency.
+    - [x] 4.4.3c Expose `onMouseOver` and `onMouseOut` event forwarders on `AsyncDataTree`.
 
 - [ ] **4.5 Packaging & Distribution Footprint**
   - [ ] 4.5.1 Strip unused language `.pak` files from the Electron distribution (retaining English and active targets).
