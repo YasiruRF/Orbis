@@ -157,6 +157,12 @@ Strip out obsolete built-in baggage, eliminate all telemetry/experimentation loo
     - [x] 4.4.3a Default minimap to block mode (`editor.minimap.renderCharacters: false`) eliminating canvas glyph layout overhead.
     - [x] 4.4.3b Implement predictive text model pre-warming in Explorer (`onMouseOver` / `onDidChangeFocus`) to eliminate cold-switch latency.
     - [x] 4.4.3c Expose `onMouseOver` and `onMouseOut` event forwarders on `AsyncDataTree`.
+    - [ ] 4.4.3d Font measurement pre-warming on idle (`FontMeasurements.readFontInfo()`) to eliminate forced synchronous DOM reflows on initial editor mount.
+    - [ ] 4.4.3e Debounce word occurrences highlighting (`editor.occurrencesHighlightDelay: 150`) to keep rapid cursor movement locked at 120fps.
+    - [ ] 4.4.3f Trim sticky scroll DOM depth & AST queries (`editor.stickyScroll.maxLineCount: 3`).
+    - [ ] 4.4.3g Apply CSS layout containment (`contain: layout style`) on list rows (`.monaco-list-row`) to prevent layout recalculation bubbling.
+    - [ ] 4.4.3h Enable Chromium OOP 2D canvas rasterization (`CanvasOopRasterization`) in `src/mainImpl.ts`.
+    - [ ] 4.4.3i Idle LRU eviction sweep for stale unreferenced text models in `TextFileEditorModelManager`.
 
 - [ ] **4.5 Packaging & Distribution Footprint**
   - [ ] 4.5.1 Strip unused language `.pak` files from the Electron distribution (retaining English and active targets).

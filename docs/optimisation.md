@@ -40,3 +40,40 @@ Transform Orbis from a heavyweight Code OSS baseline into an exceptionally lean,
 - [ ] **Prune Locales**: Strip unused language `.pak` files from the Electron distribution (retaining English and active targets).
 - [ ] **Dependency Audit**: Review root `package.json` dependencies for redundant or heavy packages.
 - [ ] **Benchmark & Validate**: Establish baseline vs. optimized metrics using `npm run perf` and memory profiles.
+
+---
+
+## Queued Small Optimizations (High-Impact & Animation-Preserving)
+
+These candidate optimizations eliminate micro-stutters and cold latency without sacrificing visual polish, caret easing, or smooth scrolling:
+
+1. **Font Measurement Pre-warming (DOM Reflow Elimination)**
+   - **Target**: `src/vs/editor/browser/config/charWidthReader.ts` & `src/vs/editor/browser/config/fontMeasurements.ts`
+   - **Mechanism**: `DomCharWidthReader.read()` injects 30+ spans with 256 repeated characters into `document.body` and measures `offsetWidth` synchronously. If this runs when the first editor opens, it causes a forced layout / reflow during the initial frame.
+   - **Action**: Call `FontMeasurements.readFontInfo()` during idle time right after workbench startup or during splash screen load so the font cache is 100% warm before any file is opened.
+
+2. **Occurrences Highlighting Debounce (Cursor Motion Polish)**
+   - **Target**: `src/vs/editor/common/config/editorOptions.ts` (`occurrencesHighlightDelay`)
+   - **Mechanism**: Defaults to `0` ms. Every single cursor step immediately queries the language service and text model without debounce, causing micro-stutters during rapid arrow-key or Vim navigation in large files.
+   - **Action**: Default `editor.occurrencesHighlightDelay` to `150` ms. Resting on a symbol highlights instantly, but fast cursor movement stays locked at 120fps.
+
+3. **Sticky Scroll Depth & AST Query Trimming**
+   - **Target**: `src/vs/editor/common/config/editorOptions.ts` (`stickyScroll.maxLineCount`)
+   - **Mechanism**: Defaults to `5` lines, consuming vertical editing height and requiring 5 nested DOM widgets with AST queries against outline/folding models.
+   - **Action**: Reduce default `editor.stickyScroll.maxLineCount` to `3` lines. Cuts sticky scroll DOM nodes and AST queries by 40% while preserving context.
+
+4. **CSS Layout Containment on List Rows**
+   - **Target**: `src/vs/base/browser/ui/list/list.css`
+   - **Mechanism**: `.monaco-list-row` lacks explicit CSS layout containment. Hovering and selecting deep tree items can cause Chromium to recalculate geometry up the DOM tree.
+   - **Action**: Add `contain: layout style` to `.monaco-list-row` and `content-visibility: auto` to inactive view containers to prevent layout recalculation bubbling and isolate paint invalidations.
+
+5. **Chromium Out-of-Process (OOP) 2D Canvas Rasterization**
+   - **Target**: `src/mainImpl.ts` (`featuresToEnable`)
+   - **Mechanism**: Minimap, terminal canvases, and editor decorations can contend with DOM layout on the UI thread during rasterization.
+   - **Action**: Add `CanvasOopRasterization` to Chromium `featuresToEnable` switches in `src/mainImpl.ts` to offload 2D canvas drawing to the dedicated GPU raster thread.
+
+6. **V8 Heap Stability — Idle Eviction for Stale Unreferenced Text Models**
+   - **Target**: `src/vs/workbench/services/textfile/common/textFileEditorModelManager.ts`
+   - **Mechanism**: `mapResourceToModel` retains all resolved models indefinitely. With our 10-tab limit, files pre-warmed or opened hours ago remain in memory.
+   - **Action**: Introduce a low-priority idle sweep (e.g. every 10–15 minutes) that disposes clean, non-dirty models not present in the active 10-tab working set.
+
